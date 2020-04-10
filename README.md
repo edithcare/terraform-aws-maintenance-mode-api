@@ -1,4 +1,7 @@
+
 # Terraform AWS Maintenance Mode API
+
+![Terraform GitHub Actions](https://github.com/edithcare/terraform-aws-maintenance-mode-api/workflows/Terraform%20GitHub%20Actions/badge.svg)
 
 This terraform module creates a Maintenance Mode API on AWS through the AWS API Gateway and all necessary resource like custom domains in Route 53. It's possible to declare multiple different environments with specific endpoints and separate maintenance mode toggles. An endpoint will return a HTTP status code 200 in case the maintenance mode is off, otherwise a 503 HTTP status code for all requests.
 
