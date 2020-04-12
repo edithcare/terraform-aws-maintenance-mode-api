@@ -14,7 +14,8 @@ This terraform module creates a Maintenance Mode API on AWS through the AWS API 
 ```hcl
 
 module "maintenance_api" {
-  source = "terraform-aws-maintenance-mode-api"
+  source  = "app.terraform.io/edithcare/maintenance-mode-api/aws"
+  version = "0.1.0"
 
   zone_name                = "test.com."
   maintenance_api_name     = "Maintenance API"
