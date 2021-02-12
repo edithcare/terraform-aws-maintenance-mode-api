@@ -97,9 +97,22 @@ resource "aws_api_gateway_integration_response" "maintenance_api_response_503" {
 }
 
 resource "aws_api_gateway_deployment" "maintenance_api" {
-  depends_on  = [aws_api_gateway_integration.maintenance_api, aws_api_gateway_method.maintenance_api, aws_api_gateway_method_response.maintenance_api_response_200, aws_api_gateway_method_response.maintenance_api_response_503, aws_api_gateway_integration_response.maintenance_api_response_200, aws_api_gateway_integration_response.maintenance_api_response_503]
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  stage_name  = "default"
+
+  triggers = {
+    redeployment = sha1(jsonencode([
+      aws_api_gateway_integration.maintenance_api
+      , aws_api_gateway_method.maintenance_api
+      , aws_api_gateway_method_response.maintenance_api_response_200
+      , aws_api_gateway_method_response.maintenance_api_response_503
+      , aws_api_gateway_integration_response.maintenance_api_response_200
+      , aws_api_gateway_integration_response.maintenance_api_response_503
+    ]))
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_api_gateway_stage" "maintenance_api" {
