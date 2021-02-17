@@ -39,14 +39,14 @@ resource "aws_api_gateway_integration" "maintenance_api" {
   type                 = "MOCK"
   passthrough_behavior = "NEVER"
   request_templates = {
-    "application/json" = <<EOT
-{
-  #if( $stageVariables.maintenance == "${local.maintenance_on}" )
-    "statusCode": 503
-  #else
-    "statusCode": 200
-  #end
-}
+    "application/json" = <<-EOT
+      {
+        #if( $stageVariables.maintenance == "${local.maintenance_on}" )
+          "statusCode": 503
+        #else
+          "statusCode": 200
+        #end
+      }
       EOT
   }
   timeout_milliseconds = 29000
