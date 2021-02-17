@@ -12,7 +12,6 @@ resource "aws_api_gateway_integration" "maintenance_api_options" {
   http_method          = aws_api_gateway_method.maintenance_api_options.http_method
   type                 = "MOCK"
   passthrough_behavior = "WHEN_NO_MATCH"
-  request_parameters   = {}
   request_templates = {
     "application/json" = jsonencode({
       statusCode = 200
