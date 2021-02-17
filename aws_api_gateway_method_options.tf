@@ -43,9 +43,9 @@ resource "aws_api_gateway_method_response" "maintenance_api_options_response_200
     "application/json" = "Empty"
   }
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Headers" = false # why false ?
-    "method.response.header.Access-Control-Allow-Methods" = false # why false ?
-    "method.response.header.Access-Control-Allow-Origin"  = false # why false ?
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
   }
   status_code = aws_api_gateway_integration_response.maintenance_api_options_response_200.status_code
 }
