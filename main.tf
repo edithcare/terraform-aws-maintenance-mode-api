@@ -35,10 +35,10 @@ resource "aws_api_gateway_deployment" "maintenance_api" {
       , aws_api_gateway_method_response.maintenance_api_response_503
       , aws_api_gateway_integration_response.maintenance_api_response_200
       , aws_api_gateway_integration_response.maintenance_api_response_503
-      # , aws_api_gateway_method.maintenance_api_options
-      # , aws_api_gateway_integration.maintenance_api_options
-      # , aws_api_gateway_integration_response.maintenance_api_options_response_200
-      # , aws_api_gateway_method_response.maintenance_api_options_response_200
+      , aws_api_gateway_method.maintenance_api_options
+      , aws_api_gateway_integration.maintenance_api_options
+      , aws_api_gateway_integration_response.maintenance_api_options_response_200
+      , aws_api_gateway_method_response.maintenance_api_options_response_200
     ]))
   }
 
