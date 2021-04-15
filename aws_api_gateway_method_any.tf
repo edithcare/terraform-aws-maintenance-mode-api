@@ -1,6 +1,6 @@
 resource "aws_api_gateway_method" "maintenance_api" {
   rest_api_id      = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id      = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id      = aws_api_gateway_resource.maintenance_api.id
   http_method      = "ANY"
   authorization    = "NONE"
   api_key_required = false
@@ -8,7 +8,7 @@ resource "aws_api_gateway_method" "maintenance_api" {
 
 resource "aws_api_gateway_integration" "maintenance_api" {
   rest_api_id          = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id          = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id          = aws_api_gateway_resource.maintenance_api.id
   http_method          = aws_api_gateway_method.maintenance_api.http_method
   type                 = "MOCK"
   passthrough_behavior = "NEVER"
@@ -29,7 +29,7 @@ resource "aws_api_gateway_integration" "maintenance_api" {
 
 resource "aws_api_gateway_integration_response" "maintenance_api_response_200" {
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id = aws_api_gateway_resource.maintenance_api.id
   http_method = aws_api_gateway_method.maintenance_api.http_method
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = "'*'"
@@ -43,7 +43,7 @@ resource "aws_api_gateway_integration_response" "maintenance_api_response_200" {
 
 resource "aws_api_gateway_method_response" "maintenance_api_response_200" {
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id = aws_api_gateway_resource.maintenance_api.id
   http_method = aws_api_gateway_method.maintenance_api.http_method
   status_code = aws_api_gateway_integration_response.maintenance_api_response_200.status_code
   response_parameters = {
@@ -54,7 +54,7 @@ resource "aws_api_gateway_method_response" "maintenance_api_response_200" {
 
 resource "aws_api_gateway_integration_response" "maintenance_api_response_503" {
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id = aws_api_gateway_resource.maintenance_api.id
   http_method = aws_api_gateway_method.maintenance_api.http_method
   status_code = "503"
   response_parameters = {
@@ -64,7 +64,7 @@ resource "aws_api_gateway_integration_response" "maintenance_api_response_503" {
 
 resource "aws_api_gateway_method_response" "maintenance_api_response_503" {
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id = aws_api_gateway_resource.maintenance_api.id
   http_method = aws_api_gateway_method.maintenance_api.http_method
   status_code = aws_api_gateway_integration_response.maintenance_api_response_503.status_code
   response_parameters = {

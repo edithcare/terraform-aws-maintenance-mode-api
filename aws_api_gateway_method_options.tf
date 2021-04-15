@@ -1,6 +1,6 @@
 resource "aws_api_gateway_method" "maintenance_api_options" {
   rest_api_id      = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id      = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id      = aws_api_gateway_resource.maintenance_api.id
   http_method      = "OPTIONS"
   authorization    = "NONE"
   api_key_required = false
@@ -8,7 +8,7 @@ resource "aws_api_gateway_method" "maintenance_api_options" {
 
 resource "aws_api_gateway_integration" "maintenance_api_options" {
   rest_api_id          = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id          = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id          = aws_api_gateway_resource.maintenance_api.id
   http_method          = aws_api_gateway_method.maintenance_api_options.http_method
   type                 = "MOCK"
   passthrough_behavior = "WHEN_NO_MATCH"
@@ -22,7 +22,7 @@ resource "aws_api_gateway_integration" "maintenance_api_options" {
 
 resource "aws_api_gateway_integration_response" "maintenance_api_options_response_200" {
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id = aws_api_gateway_resource.maintenance_api.id
   http_method = aws_api_gateway_method.maintenance_api_options.http_method
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'*'"
@@ -37,7 +37,7 @@ resource "aws_api_gateway_integration_response" "maintenance_api_options_respons
 
 resource "aws_api_gateway_method_response" "maintenance_api_options_response_200" {
   rest_api_id = aws_api_gateway_rest_api.maintenance_api.id
-  resource_id = data.aws_api_gateway_resource.maintenance_api.id
+  resource_id = aws_api_gateway_resource.maintenance_api.id
   http_method = aws_api_gateway_method.maintenance_api_options.http_method
   response_models = {
     "application/json" = "Empty"
