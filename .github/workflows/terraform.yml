@@ -17,7 +17,7 @@ jobs:
       - name: 'terraform format'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.14.7
+          tf_actions_version: 0.14.11
           tf_actions_subcommand: 'fmt'
         env:
           AWS_DEFAULT_REGION: eu-central-1
@@ -26,7 +26,7 @@ jobs:
       - name: 'terraform init'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.14.7
+          tf_actions_version: 0.14.11
           tf_actions_subcommand: 'init'
         env:
           AWS_DEFAULT_REGION: eu-central-1
@@ -35,7 +35,7 @@ jobs:
       - name: 'terraform validate'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.14.7
+          tf_actions_version: 0.14.11
           tf_actions_subcommand: 'validate'
         env:
           AWS_DEFAULT_REGION: eu-central-1
@@ -44,7 +44,7 @@ jobs:
       # - name: 'terraform plan'
       #   uses: hashicorp/terraform-github-actions@master
       #   with:
-      #     tf_actions_version: 0.14.7
+      #     tf_actions_version: 0.14.11
       #     tf_actions_subcommand: 'plan'
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
