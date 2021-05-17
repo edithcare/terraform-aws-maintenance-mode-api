@@ -13,34 +13,38 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terraform Format'
+
+      - name: 'terraform format'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.12.24
+          tf_actions_version: 0.14.11
           tf_actions_subcommand: 'fmt'
         env:
           AWS_DEFAULT_REGION: eu-central-1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'Terraform Init'
+
+      - name: 'terraform init'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.12.24
+          tf_actions_version: 0.14.11
           tf_actions_subcommand: 'init'
         env:
           AWS_DEFAULT_REGION: eu-central-1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'Terraform Validate'
+
+      - name: 'terraform validate'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.12.24
+          tf_actions_version: 0.14.11
           tf_actions_subcommand: 'validate'
         env:
           AWS_DEFAULT_REGION: eu-central-1
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # - name: 'Terraform Plan'
+
+      # - name: 'terraform plan'
       #   uses: hashicorp/terraform-github-actions@master
       #   with:
-      #     tf_actions_version: 0.12.24
+      #     tf_actions_version: 0.14.11
       #     tf_actions_subcommand: 'plan'
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,24 +1,41 @@
-variable "maintenance_api_name" {
+variable "api_name" {
   type        = string
-  description = "The name AWS API Gateway"
+  description = "name of api-gateway"
 }
 
-variable "certificate_domain_names" {
-  type        = list(string)
-  description = "The domain name which should be part of the new SSL ACM certificate"
-}
-
-variable "zone_name" {
+variable "api_stage_name" {
   type        = string
-  description = "The name of the DNS zone"
+  description = "stage_name point so api endpoint"
 }
 
-variable "environments" {
+variable "api_domain_name" {
+  type        = string
+  description = "main url for the maintenance api endpoint"
+}
+
+variable "public_domains" {
   type        = map(string)
-  description = "Mapping of environment to its final HTTPS endpoint - e.q. {dev: https://api-maintenance.test.com}"
+  description = "public domains that point to api-gateway"
+}
+
+variable "zone_id" {
+  type        = string
+  description = "aws route 53 zone id"
 }
 
 variable "maintenance_modes" {
-  type        = map(bool)
-  description = "Mapping of environment to its current maintenance mode; true indicates environment is in maintenance mode - e.q. {dev: true}"
+  type        = bool
+  description = "true indicates environment is in maintenance mode"
+}
+
+variable "html_template" {
+  type        = map(string)
+  description = "mailto email address for html template"
+  default     = { "mailto" = "MAILTO", "team" = "TEAM" }
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "map of tags passed into module"
+  default     = {}
 }

@@ -1,71 +1,86 @@
 # Terraform AWS Maintenance Mode API module
 
-> Terraform modules which creates API Gateway resources on AWS.
+> terraform module which creates AWS API Gateway and Route53 resources for a maintenancenmode
 
 ![Terraform GitHub Actions](https://github.com/edithcare/terraform-aws-maintenance-mode-api/workflows/Terraform%20GitHub%20Actions/badge.svg)
 
-## available features
+- creates API Gateway mock for toggling maintenance mode (`ON`/`OFF`)
+- API Gateway endpoint will return a HTTP status `200` if maintenance mode is `OFF` or `503` when maintenance is `ON` for `GET` and `OPTIONS`
+- `GET` returns a static maintenance html
+- can add additional route53 weighted records that point to API Gateway and other Location
 
-- module creates a Maintenance Mode API on AWS through the AWS API Gateway and all necessary resource like custom domains in Route53. - It's possible to declare multiple different environments with specific endpoints and separate maintenance mode toggles.
-- endpoint will return a HTTP status code 200 in case the maintenance mode is off, otherwise a 503 HTTP status code for all requests.
-
-## requirements
-
-* A domain managed by AWS Route53
-
-## usage
-```hcl
-module "maintenance_api" {
-  source  = "app.terraform.io/edithcare/maintenance-mode-api/aws"
-  version = "0.1.0"
-
-  zone_name                = "test.com."
-  maintenance_api_name     = "Maintenance API"
-  certificate_domain_names = ["test-maintenance-api.test.com", "test-maintenance-api-dev.test.com"]
-
-  environments = {
-    "dev"  = "test-maintenance-api-dev.test.com"
-    "prod" = "test-maintenance-api.test.com"
-  }
-
-  maintenance_modes = {
-    "dev"  = true
-    "prod" = false
-  }
-}
-```
-
-## conditional creation
-..
 
 # examples
-- [simple](examples/simple): simple usage ..
-
+- [simple](examples/simple) mvp example for module usage
 
 ## documentation
 
-Terraform documentation is generated automatically using [pre-commit hooks](http://www.pre-commit.com/). Follow installation instructions [here](https://pre-commit.com/#install).
-
-## requirements
+documentation is generated via `terraform-docs markdown .`
 
 
-## providers
+## Requirements
 
-..
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 0.14.11 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.39.0 |
 
-## modules
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.39.0 |
+
+## Modules
 
 No modules.
 
-## resources
+## Resources
 
-## inputs
+| Name | Type |
+|------|------|
+| [aws_acm_certificate.maintenance_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
+| [aws_acm_certificate_validation.maintenance_api_cert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
+| [aws_api_gateway_base_path_mapping.public_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
+| [aws_api_gateway_base_path_mapping.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
+| [aws_api_gateway_deployment.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
+| [aws_api_gateway_domain_name.public_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
+| [aws_api_gateway_domain_name.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
+| [aws_api_gateway_integration.get](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) | resource |
+| [aws_api_gateway_integration.options](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) | resource |
+| [aws_api_gateway_integration_response.get_response_200](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration_response.get_response_503](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_integration_response.options_response_200](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration_response) | resource |
+| [aws_api_gateway_method.get](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
+| [aws_api_gateway_method.options](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method) | resource |
+| [aws_api_gateway_method_response.get_response_200](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_response) | resource |
+| [aws_api_gateway_method_response.get_response_503](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_response) | resource |
+| [aws_api_gateway_method_response.options_response_200](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_method_response) | resource |
+| [aws_api_gateway_rest_api.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_rest_api) | resource |
+| [aws_api_gateway_stage.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_stage) | resource |
+| [aws_route53_record.maintenance_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_route53_record.maintenance_api_cert_validations](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_record) | resource |
+| [aws_api_gateway_resource.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/api_gateway_resource) | data source |
 
-Please see the [variables.tf](variables.tf) file
+## Inputs
 
-## outputs
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_api_domain_name"></a> [api\_domain\_name](#input\_api\_domain\_name) | main url for the maintenance api endpoint | `string` | n/a | yes |
+| <a name="input_api_name"></a> [api\_name](#input\_api\_name) | name of api-gateway | `string` | n/a | yes |
+| <a name="input_api_stage_name"></a> [api\_stage\_name](#input\_api\_stage\_name) | stage\_name point so api endpoint | `string` | n/a | yes |
+| <a name="input_html_template"></a> [html\_template](#input\_html\_template) | mailto email address for html template | `map(string)` | <pre>{<br>  "mailto": "MAILTO",<br>  "team": "TEAM"<br>}</pre> | no |
+| <a name="input_maintenance_modes"></a> [maintenance\_modes](#input\_maintenance\_modes) | true indicates environment is in maintenance mode | `bool` | n/a | yes |
+| <a name="input_public_domains"></a> [public\_domains](#input\_public\_domains) | public domains that point to api-gateway | `map(string)` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | map of tags passed into module | `map(string)` | `{}` | no |
+| <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | aws route 53 zone id | `string` | n/a | yes |
 
-Please see the [output.tf](output.tf) file
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_aws_api_gateway_domain_name"></a> [aws\_api\_gateway\_domain\_name](#output\_aws\_api\_gateway\_domain\_name) | needed at aws\_route53\_record alias (regional\_domain\_name and regional\_zone\_id) |
+
 
 ## license
 
