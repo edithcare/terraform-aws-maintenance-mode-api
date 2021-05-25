@@ -13,11 +13,6 @@ variable "api_domain_name" {
   description = "main url for the maintenance api endpoint"
 }
 
-variable "public_domains" {
-  type        = map(string)
-  description = "public domains that point to api-gateway"
-}
-
 variable "zone_id" {
   type        = string
   description = "aws route 53 zone id"

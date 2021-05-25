@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.39.0"
+      version = "~> 3.42.0"
     }
   }
 }
@@ -20,7 +20,7 @@ locals {
 
   cors_integration_response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'*'"
-    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,HEAD,GET'" # "'OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE'"
+    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,HEAD,GET'"
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
     "method.response.header.Access-Control-Max-Age"       = "'7200'"
   }
@@ -32,7 +32,7 @@ locals {
   }
 }
 
-/********************************************** route53 **************************************************************************/
+# ------------------------------------------------------ route53 ------------------------------------------------------
 
 resource "aws_route53_record" "maintenance_api" {
   type    = "A"
@@ -79,7 +79,7 @@ resource "aws_acm_certificate_validation" "maintenance_api_cert" {
   validation_record_fqdns = [for record in aws_route53_record.maintenance_api_cert_validations : record.fqdn]
 }
 
-/********************************************** API Gateway _ **************************************************************************/
+# ------------------------------------------------------ API Gateway _ ------------------------------------------------------
 
 resource "aws_api_gateway_rest_api" "restapi" {
   name = var.api_name
@@ -154,35 +154,20 @@ resource "aws_api_gateway_base_path_mapping" "restapi" {
   domain_name = aws_api_gateway_domain_name.restapi.domain_name
 }
 
-resource "aws_api_gateway_domain_name" "public_domain" {
-  for_each = var.public_domains
-
-  domain_name              = each.key
-  regional_certificate_arn = each.value
-
-  endpoint_configuration {
-    types = ["REGIONAL"]
-  }
-
-  tags = local.tags
-}
-
-resource "aws_api_gateway_base_path_mapping" "public_domain" {
-  for_each = var.public_domains
-
-  domain_name = each.key
-  api_id      = aws_api_gateway_rest_api.restapi.id
-  stage_name  = aws_api_gateway_stage.restapi.stage_name
-}
-
-/********************************************** method: OPTIONS **************************************************************************/
+# ------------------------------------------------------ method: OPTION ------------------------------------------------------
 
 resource "aws_api_gateway_method" "options" {
-  rest_api_id      = aws_api_gateway_rest_api.restapi.id
-  resource_id      = aws_api_gateway_rest_api.restapi.root_resource_id
-  http_method      = "OPTIONS"
-  authorization    = "NONE"
-  api_key_required = false
+  rest_api_id          = aws_api_gateway_rest_api.restapi.id
+  resource_id          = aws_api_gateway_rest_api.restapi.root_resource_id
+  http_method          = "OPTIONS"
+  authorization        = "NONE"
+  api_key_required     = false
+  authorization_scopes = []
+  authorizer_id        = ""
+  operation_name       = ""
+  request_models       = {}
+  request_parameters   = {}
+  request_validator_id = ""
 }
 
 resource "aws_api_gateway_integration" "options" {
@@ -193,6 +178,8 @@ resource "aws_api_gateway_integration" "options" {
   http_method          = aws_api_gateway_method.options.http_method
   request_templates    = { "application/json" = jsonencode({ statusCode = 200 }) }
   timeout_milliseconds = 29000
+  cache_key_parameters = []
+  request_parameters   = {}
 }
 
 resource "aws_api_gateway_integration_response" "options_response_200" {
@@ -203,6 +190,7 @@ resource "aws_api_gateway_integration_response" "options_response_200" {
   http_method         = aws_api_gateway_method.options.http_method
   response_parameters = local.cors_integration_response_parameters
   status_code         = "200"
+  response_templates  = {}
 }
 
 resource "aws_api_gateway_method_response" "options_response_200" {
@@ -214,14 +202,20 @@ resource "aws_api_gateway_method_response" "options_response_200" {
   status_code         = "200"
 }
 
-/********************************************** method: GET **************************************************************************/
+# ------------------------------------------------------ method: GET ------------------------------------------------------
 
 resource "aws_api_gateway_method" "get" {
-  rest_api_id      = aws_api_gateway_rest_api.restapi.id
-  resource_id      = data.aws_api_gateway_resource.restapi.id
-  http_method      = "GET"
-  authorization    = "NONE"
-  api_key_required = false
+  rest_api_id          = aws_api_gateway_rest_api.restapi.id
+  resource_id          = data.aws_api_gateway_resource.restapi.id
+  http_method          = "GET"
+  authorization        = "NONE"
+  api_key_required     = false
+  authorization_scopes = []
+  authorizer_id        = ""
+  operation_name       = ""
+  request_models       = {}
+  request_parameters   = {}
+  request_validator_id = ""
 }
 
 resource "aws_api_gateway_integration" "get" {
@@ -244,6 +238,8 @@ resource "aws_api_gateway_integration" "get" {
     EOT
   }
   timeout_milliseconds = 29000
+  cache_key_parameters = []
+  request_parameters   = {}
 }
 
 resource "aws_api_gateway_integration_response" "get_response_200" {
