@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.39.0"
+      version = "~> 3.42.0"
     }
   }
 }
@@ -20,7 +20,7 @@ locals {
 
   cors_integration_response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'*'"
-    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,HEAD,GET'" # "'OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE'"
+    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,HEAD,GET'"
     "method.response.header.Access-Control-Allow-Origin"  = "'*'"
     "method.response.header.Access-Control-Max-Age"       = "'7200'"
   }
@@ -32,7 +32,7 @@ locals {
   }
 }
 
-/********************************************** route53 **************************************************************************/
+# ------------------------------------------------------ route53 ------------------------------------------------------
 
 resource "aws_route53_record" "maintenance_api" {
   type    = "A"
@@ -79,7 +79,7 @@ resource "aws_acm_certificate_validation" "maintenance_api_cert" {
   validation_record_fqdns = [for record in aws_route53_record.maintenance_api_cert_validations : record.fqdn]
 }
 
-/********************************************** API Gateway _ **************************************************************************/
+# ------------------------------------------------------ API Gateway _ ------------------------------------------------------
 
 resource "aws_api_gateway_rest_api" "restapi" {
   name = var.api_name
@@ -154,7 +154,7 @@ resource "aws_api_gateway_base_path_mapping" "restapi" {
   domain_name = aws_api_gateway_domain_name.restapi.domain_name
 }
 
-/********************************************** method: OPTIONS **************************************************************************/
+# ------------------------------------------------------ method: OPTION ------------------------------------------------------
 
 resource "aws_api_gateway_method" "options" {
   rest_api_id          = aws_api_gateway_rest_api.restapi.id
@@ -202,7 +202,7 @@ resource "aws_api_gateway_method_response" "options_response_200" {
   status_code         = "200"
 }
 
-/********************************************** method: GET **************************************************************************/
+# ------------------------------------------------------ method: GET ------------------------------------------------------
 
 resource "aws_api_gateway_method" "get" {
   rest_api_id          = aws_api_gateway_rest_api.restapi.id
