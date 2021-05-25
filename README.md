@@ -23,13 +23,13 @@ documentation is generated via `terraform-docs markdown .`
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 0.14.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.39.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 3.42.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.39.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.42.0 |
 
 ## Modules
 
@@ -41,10 +41,8 @@ No modules.
 |------|------|
 | [aws_acm_certificate.maintenance_api](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate) | resource |
 | [aws_acm_certificate_validation.maintenance_api_cert](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/acm_certificate_validation) | resource |
-| [aws_api_gateway_base_path_mapping.public_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_base_path_mapping.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_base_path_mapping) | resource |
 | [aws_api_gateway_deployment.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_deployment) | resource |
-| [aws_api_gateway_domain_name.public_domain](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
 | [aws_api_gateway_domain_name.restapi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_domain_name) | resource |
 | [aws_api_gateway_integration.get](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) | resource |
 | [aws_api_gateway_integration.options](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/api_gateway_integration) | resource |
@@ -71,7 +69,6 @@ No modules.
 | <a name="input_api_stage_name"></a> [api\_stage\_name](#input\_api\_stage\_name) | stage\_name point so api endpoint | `string` | n/a | yes |
 | <a name="input_html_template"></a> [html\_template](#input\_html\_template) | mailto email address for html template | `map(string)` | <pre>{<br>  "mailto": "MAILTO",<br>  "team": "TEAM"<br>}</pre> | no |
 | <a name="input_maintenance_modes"></a> [maintenance\_modes](#input\_maintenance\_modes) | true indicates environment is in maintenance mode | `bool` | n/a | yes |
-| <a name="input_public_domains"></a> [public\_domains](#input\_public\_domains) | public domains that point to api-gateway | `map(string)` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | map of tags passed into module | `map(string)` | `{}` | no |
 | <a name="input_zone_id"></a> [zone\_id](#input\_zone\_id) | aws route 53 zone id | `string` | n/a | yes |
 
@@ -79,8 +76,8 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_aws_api_gateway_domain_name"></a> [aws\_api\_gateway\_domain\_name](#output\_aws\_api\_gateway\_domain\_name) | needed at aws\_route53\_record alias (regional\_domain\_name and regional\_zone\_id) |
-
+| <a name="output_api_id"></a> [api\_id](#output\_api\_id) | id of the API to connect |
+| <a name="output_stage_name"></a> [stage\_name](#output\_stage\_name) | name of a specific deployment stage to expose at the given path |
 
 ## license
 
